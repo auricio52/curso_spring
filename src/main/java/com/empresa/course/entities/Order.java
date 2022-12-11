@@ -2,6 +2,7 @@ package com.empresa.course.entities;
 
 import com.empresa.course.entities.enums.OrderStatus;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
@@ -35,6 +36,12 @@ public class Order implements Serializable {
         this.moment = moment;
         this.client = client;
         setOrderStatus(orderStatus);
+    }
+
+    public Double getTotal() {
+        return items.stream()
+                .map(OrderItem::getSubTotal)
+                .reduce(0.0, (subtotal, element) -> subtotal + element);
     }
 
     public Long getId() {

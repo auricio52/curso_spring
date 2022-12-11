@@ -27,6 +27,11 @@ public class OrderItem implements Serializable {
         this.quantity = quantity;
     }
 
+    // O nome do método inicia com get para que o resultado possa ser mapeado para um json
+    public Double getSubTotal() {
+        return price * quantity;
+    }
+
     @JsonIgnore
     public Order getOrder() {
         return id.getOrder();
