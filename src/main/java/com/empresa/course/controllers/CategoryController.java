@@ -21,13 +21,13 @@ public class CategoryController {
 
     @GetMapping
     public ResponseEntity<List<Category>> findAll() {
-        List<Category> orders = categoryService.findAll();
-        return ResponseEntity.ok(orders);
+        List<Category> categories = categoryService.findAll();
+        return ResponseEntity.ok(categories);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Category> findById(@PathVariable Long id) {
-        Category order = categoryService.findById(id);
-        return ResponseEntity.ok(order);
+        Category category = categoryService.findById(id);
+        return ResponseEntity.ok(category);
     }
 }
