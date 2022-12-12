@@ -2,6 +2,7 @@ package com.empresa.course.services;
 
 import com.empresa.course.entities.User;
 import com.empresa.course.repositories.UserRepository;
+import com.empresa.course.services.exceptions.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,8 +21,7 @@ public class UserService {
     }
 
     public User findById(Long id) {
-        Optional<User> optional = userRepository.findById(id);
-        return optional.get();
+        return userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
     }
 
     public User insert(User user) {
