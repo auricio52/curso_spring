@@ -2,7 +2,10 @@ package com.empresa.course.services;
 
 import com.empresa.course.entities.User;
 import com.empresa.course.repositories.UserRepository;
+import com.empresa.course.services.exceptions.DatabaseException;
 import com.empresa.course.services.exceptions.ResourceNotFoundException;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -35,7 +38,13 @@ public class UserService {
     }
 
     public void delete(Long id) {
-        userRepository.deleteById(id);
+        try {
+            userRepository.deleteById(id);
+        } catch (EmptyResultDataAccessException exception) {
+            throw new ResourceNotFoundException(id);
+        } catch (DataIntegrityViolationException exception) {
+            throw new DatabaseException(exception.getMessage());
+        }
     }
 
     private void updateData(User currentUser, User newUser) {
