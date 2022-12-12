@@ -4,6 +4,7 @@ import com.empresa.course.entities.User;
 import com.empresa.course.repositories.UserRepository;
 import com.empresa.course.services.exceptions.DatabaseException;
 import com.empresa.course.services.exceptions.ResourceNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
@@ -32,9 +33,13 @@ public class UserService {
     }
 
     public User update(Long id, User newUser) {
-        User currentUser = userRepository.getReferenceById(id);
-        updateData(currentUser, newUser);
-        return userRepository.save(currentUser);
+       try {
+           User currentUser = userRepository.getReferenceById(id);
+           updateData(currentUser, newUser);
+           return userRepository.save(currentUser);
+       } catch (EntityNotFoundException exception) {
+           throw new ResourceNotFoundException(id);
+       }
     }
 
     public void delete(Long id) {
